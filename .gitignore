@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Env & OS
+.env
+*.swp
+*.swo
+.DS_Store
+
+# ShadowFox outputs
+proofs/
+reports/
+missions/history/
+screenshots/
+*.pdf
+*.jsonl
+
+# Editor
+.vscode/
+.idea/

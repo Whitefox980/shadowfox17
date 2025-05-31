@@ -1,0 +1,121 @@
+./modules/agents/smart_shadow_agent2.py:import requests
+./modules/agents/smart_shadow_agent2.py:import random
+./modules/agents/smart_shadow_agent2.py:import time
+./modules/agents/smart_shadow_agent2.py:import json
+./modules/agents/smart_shadow_agent2.py:import re
+./modules/agents/smart_shadow_agent2.py:from urllib.parse import urljoin, urlparse, parse_qs, urlencode
+./modules/agents/smart_shadow_agent2.py:from typing import Dict, List, Any, Optional, Tuple
+./modules/agents/smart_shadow_agent2.py:import concurrent.futures
+./modules/agents/smart_shadow_agent2.py:from datetime import datetime
+./modules/agents/smart_shadow_agent2.py:import logging
+./modules/agents/smart_shadow_agent2.py:import hashlib
+./modules/agents/smart_shadow_agent2.py:from collections import defaultdict
+./modules/agents/shadow_spider.py:import requests
+./modules/agents/shadow_spider.py:import re
+./modules/agents/shadow_spider.py:import json
+./modules/agents/shadow_spider.py:import time
+./modules/agents/shadow_spider.py:import hashlib
+./modules/agents/shadow_spider.py:from urllib.parse import urljoin, urlparse, parse_qs, unquote
+./modules/agents/shadow_spider.py:from collections import deque, defaultdict
+./modules/agents/shadow_spider.py:from typing import Dict, List, Set, Tuple, Any, Optional
+./modules/agents/shadow_spider.py:import concurrent.futures
+./modules/agents/shadow_spider.py:from dataclasses import dataclass, asdict
+./modules/agents/shadow_spider.py:import logging
+./modules/agents/shadow_spider.py:from pathlib import Path
+./modules/agents/shadow_spider.py:import random
+./modules/mutation/payload_seeder.py:import sqlite3
+./modules/mutation/payload_seeder.py:import json
+./modules/mutation/payload_seeder.py:from typing import Dict, List
+./modules/mutation/payload_seeder.py:import base64
+./modules/mutation/payload_seeder.py:import urllib.parse
+./modules/core/event_bus.py:import asyncio
+./modules/core/event_bus.py:import threading
+./modules/core/event_bus.py:import time
+./modules/core/event_bus.py:import json
+./modules/core/event_bus.py:import logging
+./modules/core/event_bus.py:from typing import Dict, List, Callable, Any, Optional
+./modules/core/event_bus.py:from dataclasses import dataclass, asdict
+./modules/core/event_bus.py:from enum import Enum
+./modules/core/event_bus.py:from collections import defaultdict, deque
+./modules/core/event_bus.py:import weakref
+./modules/core/event_bus.py:import hashlib
+./modules/core/orchestrator.py:import os
+./modules/core/orchestrator.py:import sys
+./modules/core/orchestrator.py:import importlib
+./modules/core/orchestrator.py:import inspect
+./modules/core/orchestrator.py:import asyncio
+./modules/core/orchestrator.py:import threading
+./modules/core/orchestrator.py:import time
+./modules/core/orchestrator.py:import json
+./modules/core/orchestrator.py:import traceback
+./modules/core/orchestrator.py:from typing import Dict, List, Any, Optional, Type, Callable, Union
+./modules/core/orchestrator.py:from dataclasses import dataclass, field
+./modules/core/orchestrator.py:from enum import Enum
+./modules/core/orchestrator.py:from pathlib import Path
+./modules/core/orchestrator.py:import logging
+./modules/core/orchestrator.py:from collections import defaultdict, OrderedDict
+./modules/core/orchestrator.py:from shadowfox_db import ShadowFoxDB, MissionData
+./modules/core/orchestrator.py:from shadowfox_event_bus import ShadowFoxEventBus, ShadowFoxEvent, EventType, EventPriority
+./modules/core/base_module.py:import time
+./modules/core/base_module.py:import threading
+./modules/core/base_module.py:import asyncio
+./modules/core/base_module.py:import logging
+./modules/core/base_module.py:from abc import ABC, abstractmethod
+./modules/core/base_module.py:from typing import Dict, List, Any, Optional, Callable
+./modules/core/base_module.py:from dataclasses import dataclass
+./modules/core/base_module.py:from enum import Enum
+./modules/core/base_module.py:from shadowfox_core_db import ShadowFoxDB, MissionData
+./modules/core/base_module.py:from shadowfox_event_bus import ShadowFoxEventBus, ShadowFoxEvent, EventType, EventPriority
+./modules/core/fuzz_engine.py:import itertools
+./modules/core/fuzz_engine.py:import random
+./modules/core/fuzz_engine.py:import string
+./modules/core/fuzz_engine.py:import base64
+./modules/core/fuzz_engine.py:import urllib.parse
+./modules/core/fuzz_engine.py:import html
+./modules/core/fuzz_engine.py:import json
+./modules/core/fuzz_engine.py:import re
+./modules/core/fuzz_engine.py:from typing import List, Dict, Generator, Any
+./modules/core/fuzz_engine.py:import logging
+./modules/ai/ai_brain.py:import json
+./modules/ai/ai_brain.py:import logging
+./modules/ai/ai_brain.py:import time
+./modules/ai/ai_brain.py:import threading
+./modules/ai/ai_brain.py:from typing import Dict, List, Any, Optional, Callable
+./modules/ai/ai_brain.py:from datetime import datetime, timedelta
+./modules/ai/ai_brain.py:from dataclasses import dataclass
+./modules/ai/ai_brain.py:from enum import Enum
+./modules/ai/ai_brain.py:import sqlite3
+./modules/ai/ai_brain.py:from pathlib import Path
+./modules/ai/ai_brain.py:import queue
+./modules/ai/ai_brain.py:import concurrent.futures
+./main.py:import os
+./main.py:import sys
+./main.py:import time
+./main.py:import signal
+./main.py:import argparse
+./main.py:import asyncio
+./main.py:import json
+./main.py:from pathlib import Path
+./main.py:from typing import Dict, List, Optional
+./main.py:import logging
+./main.py:from rich.console import Console
+./main.py:from rich.table import Table
+./main.py:from rich.panel import Panel
+./main.py:from rich.progress import Progress, SpinnerColumn, TextColumn
+./main.py:from rich.prompt import Prompt, Confirm
+./main.py:from rich.live import Live
+./main.py:from rich.layout import Layout
+./main.py:from rich.text import Text
+./main.py:from core.shadowfox_db import ShadowFoxDB
+./main.py:from core.event_bus import ShadowFoxEventBus, EventType, ShadowFoxEvent, EventPriority
+./main.py:from core.orchestrator import ShadowFoxOrchestrator
+./main.py:from modules.command.operator import ShadowFoxOperator
+./core/data_base.py:import sqlite3
+./core/data_base.py:import json
+./core/data_base.py:import hashlib
+./core/data_base.py:import time
+./core/data_base.py:from datetime import datetime
+./core/data_base.py:from typing import Dict, List, Any, Optional
+./core/data_base.py:from pathlib import Path
+./core/data_base.py:import threading
+./core/data_base.py:from contextlib import contextmanager
