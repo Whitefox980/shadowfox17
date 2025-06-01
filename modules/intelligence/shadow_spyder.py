@@ -13,6 +13,8 @@ from dataclasses import dataclass, asdict
 import logging
 from pathlib import Path
 import random
+import asyncio
+from datetime import datetime
 
 @dataclass
 class CrawlResult:
@@ -63,7 +65,23 @@ class ShadowReconSpider:
         
         # AI heuristike za scoring
         self.setup_ai_patterns()
-    
+    async def run(self):
+         self.logger.info("🚀 ShadowReconAgent is running...")
+         while True:
+             task = await self.operator.brain.get_next_task("ReconAgent")
+             if not task:
+                 await asyncio.sleep(2)
+                 continue
+
+             self.logger.info(f"🎯 Obrađujem zadatak: {task.id}")
+             spider = ShadowReconSpider(self.operator)
+             try:
+                 result = spider.crawl_target(task.target_url, task.mission_id)
+                 self.logger.info(f"✅ Skeniranje završeno za {task.target_url}")
+                # TODO: slanje rezultata nazad kroz event ili direktno
+             except Exception as e:
+                 self.logger.error(f"❌ Greška tokom skeniranja: {e}")
+
     def setup_session(self):
         """Postavlja HTTP session sa stealth parametrima"""
         user_agents = [

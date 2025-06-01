@@ -5,7 +5,8 @@ AI-Driven Penetration Testing Framework
 """
 import sys
 import os
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "modules")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "modules/payloads")))
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import time
 import signal
@@ -54,9 +55,9 @@ from core.shadowfox_event_bus import EventHandler
 from modules.ai.ai_brain import AIBrain
 
 from modules.ai.shadow_operator import ShadowFoxOperator
-
+from modules.monitor.ghost_task_monitor import GhostThreadMonitor
+asyncio.create_task(GhostThreadMonitor().monitor())
 operator = ShadowFoxOperator()
-brain = AIBrain(operator)
 class ShadowFoxCLI:
     """
     Main ShadowFox CLI interface
@@ -77,7 +78,7 @@ class ShadowFoxCLI:
         
         self.current_mission_id: Optional[str] = None
         self.shutdown_requested = False
-        
+        brain = AIBrain(operator)
         # Statistike
         self.start_time = time.time()
         self.mission_count = 0
@@ -535,7 +536,12 @@ async def main():
     
     # Create CLI instance
     cli = ShadowFoxCLI()
+    asyncio.create_task(op.agents["MutationEngine"].run())
+    asyncio.create_task(op.agents["ReconAgent"].run())
+    asyncio.create_task(op.agents["SmartShadowAgent"].run())
+    asyncio.create_task(op.brain.live_monitor())
     
+    op.brain.print_brain_status()
     # Show banner
     if not args.quiet:
         cli.print_banner()
@@ -591,7 +597,6 @@ async def main():
         cli.shutdown()
     
     return 0
-
 if __name__ == "__main__":
     # Ensure we're running in the right directory
     script_dir = Path(__file__).parent.absolute()

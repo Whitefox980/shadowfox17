@@ -10,15 +10,16 @@ from typing import Dict, List, Any, Optional, Tuple
 import itertools
 from datetime import datetime
 import logging
+import asyncio
 
 class MutationEngine:
     """
     Napredni MutationEngine koji generiše mutirane payload-e
     koristeći AI heuristiku i kontekstualnu analizu
     """
-    
-    def __init__(self, operator):
+    def __init__(self, operator, db):
         self.operator = operator
+        self.db = db  # Dodaj ovo
         self.logger = logging.getLogger('MutationEngine')
         
         # Učitaj payload biblioteku iz baze
@@ -46,7 +47,13 @@ class MutationEngine:
         ]
         
         self.logger.info("MutationEngine inicijalizovan sa AI heuristikom")
+    async def get_payloads_by_type(self, ptype="xss"):
+        """Vraća payload-e za dati tip iz biblioteke ili osnovne"""
+        if hasattr(self, "payload_library") and self.payload_library:
+            return self.payload_library.get(ptype, [])
     
+        self.logger.warning(f"⚠️ Nema payload biblioteke, koristim default za {ptype}")
+        return self.base_payloads.get(ptype.upper(), [])
     def _load_payload_library(self):
         """Učitava payload biblioteku iz baze i dodaje default payload-e ako ne postoje"""
         

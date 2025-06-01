@@ -75,8 +75,20 @@ class AIBrain:
     
     def __init__(self, operator):
         self.operator = operator
+        self.db = operator.db  # ➕ dodaj ovo odmah nakon self.operator
         self.logger = logging.getLogger('AIBrain')
-        
+        self.agents = {}
+
+        self.agent_states = {}
+        self.mutation_engine = getattr(operator, "mutation_engine", None)
+        if not self.mutation_engine:
+            self.logger.warning("⚠️ MutationEngine nije pronađen u Operatoru!")
+        # ✅ Shortcut to MutationEngine
+          # Dodaj MutationEngine instancu
+        self.mutation_engine = MutationEngine(operator=self.operator, db=self.db)
+
+        # Registruj je kao agenta ako koristi AI Task interfejs
+        self.register_agent("MutationEngine", self.mutation_engine)
         # Task management
         self.task_queue = queue.PriorityQueue()
         self.completed_tasks = {}
@@ -84,8 +96,6 @@ class AIBrain:
         self.task_dependencies = {}
         
         # Agent management
-        self.agents = {}
-        self.agent_states = {}
         
         # Mission context
         self.current_mission_context = {}
@@ -123,7 +133,14 @@ class AIBrain:
             last_activity=datetime.now()
         )
         self.logger.info(f"Agent {agent_name} registrovan")
-    
+    def print_brain_status(self):
+        print("\n🧠 AI Brain Status:")
+        print(" - Trenutna misija:", self.current_mission_context)
+        print(" - Broj zadataka u redu:", self.task_queue.qsize())
+        print(" - Registrovani agenti:", list(self.agents.keys()))
+        print(" - Aktivni agenti:")
+        for name, state in self.agent_states.items():
+            print(f"   • {name} = {state.status}, success: {state.success_rate:.2f}")
     def start_mission_coordination(self, mission_id: str, target_url: str):
         """Pokretanje koordinacije misije"""
         self.current_mission_context = {
@@ -688,7 +705,7 @@ operator = ShadowFoxOperator()
 recon_instance = ShadowReconSpider(operator)
 shadow_instance = SmartShadowAgent(operator)
 
-mutation_instance = MutationEngine(operator)
+mutation_instance = MutationEngine(operator=operator, db=operator.db)
 # 2. Registruj sve agente
 brain.register_agent("ReconAgent", recon_instance)
 brain.register_agent("MutationEngine", mutation_instance)
@@ -708,3 +725,11 @@ brain.start_mission_coordination(mission_id, "https://target.com")
 #- **Detekcija stagnacije**: Ako nema rezultata 10+ minuta, automatski menja strategiju
 #- **Auto-completion**: Nakon 30 minuta ili završetka, automatski kreira finalni izveštaj
 
+async def live_monitor(self):
+    import asyncio
+    while True:
+        print("\n🧠 AI Brain status:")
+        print("Zadaci u redu:", self.task_queue.qsize())
+        for name, state in self.agent_states.items():
+            print(f" - {name}: {state.status}, success: {state.success_rate:.2f}")
+        await asyncio.sleep(30)

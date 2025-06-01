@@ -10,60 +10,60 @@ from typing import Dict, List, Any, Optional, Union
 import os
 import importlib.util
 from core.shadowfox_db import ShadowFoxDB
+from payloads.mutation_engine import MutationEngine
+from modules.payloads.mutation_engine import MutationEngine
+
 class ShadowFoxOperator:
     """
     Centralni Operator v2 koji koordinira sve agente i baze podataka.
     Proširen sa podrškom za sve agente i JSON meta unos.
     """
     
+    def __init__(self, base_dir: str = ".", db=None, event_bus=None):
+        self.base_dir = base_dir
+        self.logger = logging.getLogger("ShadowFoxOperator")
+        self.logger.setLevel(logging.INFO)
 
-    def __init__(self, base_dir: str = None, db=None, event_bus=None):
-        if isinstance(base_dir, ShadowFoxDB):
-        # prebacujemo argumente ako su poslati pozicioni
-            db, event_bus = base_dir, db
-            base_dir = None
-        self.db = db
-        self.event_bus = event_bus
-        # Postavke direktorijuma
-        self.base_dir = Path(base_dir) if base_dir else Path.cwd() / "shadowfox"
-        self.db_dir = self.base_dir / "databases"
-        self.reports_dir = self.base_dir / "reports"
-        self.proofs_dir = self.base_dir / "proofs"
-        self.agents_dir = self.base_dir / "agents"
-        
-        # Kreiraj direktorijume ako ne postoje
-        for dir_path in [self.db_dir, self.reports_dir, self.proofs_dir, self.agents_dir]:
+            # 1. Init event bus & db
+        self.event_bus = event_bus or ShadowFoxEventBus()
+        self.db = db or ShadowFoxDB(Path(self.base_dir) / "databases" / "shadowfox.db")
+        # ✅ Init Mutation Engine PRE AI BRAIN!
+        from modules.payloads.mutation_engine import MutationEngine
+        self.mutation_engine = MutationEngine(self, self.db)
+        setattr(self, "mutation_engine", self.mutation_engine)
+        # ✅ Tek sada AI Brain
+        from modules.ai.ai_brain import AIBrain
+        self.brain = AIBrain(operator=self)
+
+        # ✅ Registruj Mutation Engine u brain
+        self.brain.register_agent("MutationEngine", self.mutation_engine)
+
+
+    # Init folder paths
+        self.reports_dir = Path(self.base_dir) / "reports"
+        self.proofs_dir = Path(self.base_dir) / "proofs"
+        self.agents_dir = Path(self.base_dir) / "agents"
+        for dir_path in [self.base_dir, self.reports_dir, self.proofs_dir, self.agents_dir]:
             dir_path.mkdir(parents=True, exist_ok=True)
-            
-        # Putanje do baza
-        self.shadowfox_db = self.db_dir / "shadowfox.db"
-        self.poc_db = self.db_dir / "poc.db"
-        
-        # Setup logging
-        self._setup_logging()
-        
-        # Inicijalizuj baze
-        self._init_databases()
-        
-        # Trenutni mission_id
-        self.current_mission_id = None
-        self.current_mission_data = {}
-        
-        # Agent instanci (lazy loading)
+
+    # Baza putevi
+        self.shadowfox_db = Path(self.base_dir) / "shadowfox.db"
+        self.poc_db = Path(self.base_dir) / "poc.db"
+
+    # Agent instance tracking
         self.agents = {}
         self.agent_classes = {
-            'ReconAgent': None,
-            'MutationEngine': None,
-            'SmartShadowAgent': None,
-            'TrafficShaper': None,
-            'AIEvaluator': None,
-            'PDFExporter': None,
-            'ProofCollector': None,
-            'TacticianAgent': None  # Novi taktičar agent
+            "ReconAgent": None,
+            "MutationEngine": None,
+            "SmartShadowAgent": None,
+            "TrafficShaper": None,
+            "ATEvaluator": None,
+            "PDFExporter": None,
+            "ProofCollector": None,
+            "TacticianAgent": None  # Novi taktičar
         }
-        
-        self.logger.info("ShadowFox Operator v2 inicijalizovan uspešno")
-    
+
+        self.logger.info("✅ ShadowFox Operator v2 inicijalizovan uspešno")
     def _setup_logging(self):
         """Setup logging sistema"""
         log_dir = self.base_dir / "logs"
