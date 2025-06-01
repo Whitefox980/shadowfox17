@@ -13,6 +13,14 @@ from pathlib import Path
 from datetime import datetime
 import logging
 
+class ImeKlase:
+    def __init__(self, operator):
+        self.operator = operator
+        self.logger = logging.getLogger('ImeKlase')
+
+    def run(self):
+        self.logger.info("✅ ImeKlase module started")
+        # TODO: implement logic here
 class DOMCollector:
     """
     Klasa za preuzimanje i čuvanje DOM-a stranica

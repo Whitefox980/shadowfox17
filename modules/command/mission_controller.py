@@ -10,7 +10,7 @@ from pathlib import Path
 
 # Import svih agenata
 from modules.command.operator import ShadowFoxOperator
-from agents.recon_agent import ReconAgent
+from modules.intelligence.shadow_spyder import ShadowReconSpider
 # from agents.mutator_engine import MutatorEngine
 # from agents.smart_shadow_agent import SmartShadowAgent
 # from agents.traffic_shaper import TrafficShaper
@@ -29,7 +29,7 @@ class ShadowFoxMissionController:
         self.logger = logging.getLogger('MissionController')
         
         # Inicijalizuj sve agente
-        self.recon_agent = ReconAgent(self.operator)
+        self.recon_agent = ShadowReconSpider(self.operator)
         # self.mutator_engine = MutatorEngine(self.operator)
         # self.smart_shadow = SmartShadowAgent(self.operator)
         # self.traffic_shaper = TrafficShaper(self.operator)

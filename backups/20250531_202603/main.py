@@ -29,34 +29,7 @@ from core.shadowfox_db import ShadowFoxDB
 from core.shadowfox_event_bus import ShadowFoxEventBus, EventType, ShadowFoxEvent, EventPriority
 from core.orchestrator import ShadowFoxOrchestrator
 from modules.command.operator import ShadowFoxOperator
-from modules.ai.explainable_ai import ExplainableAI
-from modules.ai.taktician_agent import TakticianAgent
-from modules.command.mission_controller import ShadowFoxMissionController
-from modules.attacks.ghost_threads import ShadowPersona
-from modules.attacks.fuzz_engine import FuzzEngine
-from modules.attacks.xse_engine import VulnType
-from modules.payloads.rainbow_mutation import RainbowMutation
-from modules.payloads.mutation_engine import MutationEngine
-from modules.intelligence.dom_collector import DOMCollector
-from modules.intelligence.pathfinder import AttackSurface
-from modules.intelligence.vulnerability_mapper import VulnSeverity
-from modules.reporting.pdf_exporter import PDFExporter
-from modules.proxy.shadow_proxy import AIPayloadMutator
-from modules.proxy.traffic_shaper import TrafficShaper
-from core.base_module import ModuleStatus
-from modules.ai.ai_brain import TaskPriority
-from modules.attacks.smart_shadow_agent import SmartShadowAgent
-from modules.payloads.payload_seeder import PayloadLibrarySeeder
-from modules.intelligence.shadow_spyder import CrawlResult
-from modules.reporting.proof_collector import ProofCollector
-from core.orchestrator import ModuleStatus
-from core.shadowfox_event_bus import EventHandler
-from modules.ai.ai_brain import AIBrain
 
-from modules.ai.shadow_operator import ShadowFoxOperator
-
-operator = ShadowFoxOperator()
-brain = AIBrain(operator)
 class ShadowFoxCLI:
     """
     Main ShadowFox CLI interface

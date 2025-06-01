@@ -1,0 +1,366 @@
+{
+  "timestamp": "2025-05-31T20:26:50.741788",
+  "modules": [
+    {
+      "name": "ai_brain",
+      "file_path": "modules/ai/ai_brain.py",
+      "class_name": "TaskPriority",
+      "is_shadowfox_module": true,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "explainable_ai",
+      "file_path": "modules/ai/explainable_ai.py",
+      "class_name": "ExplainableAI",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "taktician_agent",
+      "file_path": "modules/ai/taktician_agent.py",
+      "class_name": "TakticianAgent",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "operator",
+      "file_path": "modules/command/operator.py",
+      "class_name": "ShadowFoxOperator",
+      "is_shadowfox_module": true,
+      "dependencies": [
+        "core.shadowfox_db.ShadowFoxDB"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "mission_controller",
+      "file_path": "modules/command/mission_controller.py",
+      "class_name": "ShadowFoxMissionController",
+      "is_shadowfox_module": true,
+      "dependencies": [
+        "modules.command.operator.ShadowFoxOperator"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "ghost_threads",
+      "file_path": "modules/attacks/ghost_threads.py",
+      "class_name": "ShadowPersona",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "fuzz_engine",
+      "file_path": "modules/attacks/fuzz_engine.py",
+      "class_name": "FuzzEngine",
+      "is_shadowfox_module": false,
+      "dependencies": [
+        "core.operator.ShadowFoxOperator"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "smart_shadow_agent",
+      "file_path": "modules/attacks/smart_shadow_agent.py",
+      "class_name": "SmartShadowAgent",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "xse_engine",
+      "file_path": "modules/attacks/xse_engine.py",
+      "class_name": "VulnType",
+      "is_shadowfox_module": true,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "payload_seeder",
+      "file_path": "modules/payloads/payload_seeder.py",
+      "class_name": "PayloadLibrarySeeder",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "rainbow_mutation",
+      "file_path": "modules/payloads/rainbow_mutation.py",
+      "class_name": "RainbowMutation",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "mutation_engine",
+      "file_path": "modules/payloads/mutation_engine.py",
+      "class_name": "MutationEngine",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "shadow_spider",
+      "file_path": "modules/intelligence/shadow_spider.py",
+      "class_name": "CrawlResult",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "dom_collector",
+      "file_path": "modules/intelligence/dom_collector.py",
+      "class_name": "DOMCollector",
+      "is_shadowfox_module": false,
+      "dependencies": [
+        "shadowfox.core.operator.ShadowFoxOperator"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "pathfinder",
+      "file_path": "modules/intelligence/pathfinder.py",
+      "class_name": "AttackSurface",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "vulnerability_mapper",
+      "file_path": "modules/intelligence/vulnerability_mapper.py",
+      "class_name": "VulnSeverity",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "pdf_exporter",
+      "file_path": "modules/reporting/pdf_exporter.py",
+      "class_name": "PDFExporter",
+      "is_shadowfox_module": false,
+      "dependencies": [
+        "shadowfox.core.operator.ShadowFoxOperator"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "proof_collector",
+      "file_path": "modules/reporting/proof_collector.py",
+      "class_name": "ProofCollector",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "shadow_proxy",
+      "file_path": "modules/proxy/shadow_proxy.py",
+      "class_name": "AIPayloadMutator",
+      "is_shadowfox_module": false,
+      "dependencies": [
+        "shadowfox.core.operator.ShadowFoxOperator"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "traffic_shaper",
+      "file_path": "modules/proxy/traffic_shaper.py",
+      "class_name": "TrafficShaper",
+      "is_shadowfox_module": false,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "shadowfox_db",
+      "file_path": "core/shadowfox_db.py",
+      "class_name": "ShadowFoxDB",
+      "is_shadowfox_module": true,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "orchestrator",
+      "file_path": "core/orchestrator.py",
+      "class_name": "ModuleStatus",
+      "is_shadowfox_module": true,
+      "dependencies": [
+        "core.shadowfox_db.ShadowFoxDB",
+        "core.shadowfox_event_bus.ShadowFoxEventBus",
+        "core.shadowfox_event_bus.ShadowFoxEvent",
+        "core.shadowfox_event_bus.EventType",
+        "core.shadowfox_event_bus.EventPriority"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "base_module",
+      "file_path": "core/base_module.py",
+      "class_name": "ModuleStatus",
+      "is_shadowfox_module": true,
+      "dependencies": [
+        "shadowfox_core_db.ShadowFoxDB",
+        "shadowfox_core_db.MissionData",
+        "shadowfox_event_bus.ShadowFoxEventBus",
+        "shadowfox_event_bus.ShadowFoxEvent",
+        "shadowfox_event_bus.EventType",
+        "shadowfox_event_bus.EventPriority"
+      ],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    },
+    {
+      "name": "shadowfox_event_bus",
+      "file_path": "core/shadowfox_event_bus.py",
+      "class_name": "EventHandler",
+      "is_shadowfox_module": true,
+      "dependencies": [],
+      "is_integrated": false,
+      "integration_status": {
+        "main.py": true,
+        "option_router.py": false,
+        "orchestrator": false,
+        "registry.py": false
+      }
+    }
+  ]
+}

@@ -14,9 +14,9 @@ from dataclasses import dataclass
 from enum import Enum
 
 # Import naših core komponenti
-from shadowfox_core_db import ShadowFoxDB, MissionData
-from shadowfox_event_bus import ShadowFoxEventBus, ShadowFoxEvent, EventType, EventPriority
-
+from core.shadowfox_db import ShadowFoxDB
+from core.shadowfox_core_db import MissionData
+from core.shadowfox_event_bus import ShadowFoxEventBus, ShadowFoxEvent, EventType, EventPriority
 class ModuleStatus(Enum):
     IDLE = "idle"
     INITIALIZING = "initializing"

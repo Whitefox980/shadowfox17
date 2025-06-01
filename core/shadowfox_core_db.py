@@ -14,13 +14,31 @@ from pathlib import Path
 import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
-from core.shadowfox_event_bus import EventType, ShadowFoxEventBus
+
+@dataclass
+class MissionData:
+    mission_id: str
+    name: str
+    description: str
+    status: str
+    start_time: str
+    end_time: str
+    results: Dict[str, Any]
 
 class ShadowFoxDB:
-    def __init__(self, db_path: str = "databases/shadowfox.db", event_bus=None):
-        self.db_path = db_path
-        self._lock = threading.RLock()
-        self.event_bus = event_bus
+    def __init__(self):
+        self.missions = {}
+
+    def get_mission(self, mission_id: str) -> MissionData:
+        return self.missions.get(mission_id)
+
+    def save_mission(self, mission_data: MissionData):
+        self.missions[mission_data.mission_id] = mission_data
+class ShadowFoxDB:
+    def __init__(self, db_path: str = "data/shadowfox.db"):
+        self.db_path = Path(db_path)
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._lock = threading.Lock()
         self._init_database()
         
     def _init_database(self):
@@ -141,46 +159,23 @@ class ShadowFoxDB:
                 yield conn
             finally:
                 conn.close()
-
-    def publish_event(self, mission_id, event_type, data):
-        if self.event_bus:
-            self.event_bus.publish_sync(
-                event_type=event_type,
-                mission_id=mission_id,
-                source_module="shadowfox_db",
-                data=data)
-
+    
+    # MISSION MANAGEMENT
     def create_mission(self, target_url: str, config: Dict = None) -> str:
         """Kreira novu misiju i vraća mission ID"""
-        mission_id = hashlib.md5(f"{target_url}_{time.time()}".encode()).hexdigest()
+        mission_id = hashlib.md5(f"{target_url}_{time.time()}".encode()).hexdigest()[:16]
         config = config or {}
-        if self.event_bus:
-            self.event_bus.publish_sync(
-            event_type=EventType.MODULE_STARTED,
-            mission_id=mission_id,
-            source_module="shadowfox_db",
-            data={"target_url": target_url})
+        
         with self.get_connection() as conn:
             conn.execute('''
                 INSERT INTO missions (id, target_url, config)
                 VALUES (?, ?, ?)
             ''', (mission_id, target_url, json.dumps(config)))
             conn.commit()
-
+        
         self.publish_event(mission_id, 'mission_created', {'target_url': target_url})
         return mission_id
     
-    # MISSION MANAGEMENT
-
-@dataclass
-class MissionData:
-    id: str
-    target: str
-    status: str
-    created_at: str
-    updated_at: str
-
-
     def get_mission(self, mission_id: str) -> Optional[Dict]:
         """Vraća mission data"""
         with self.get_connection() as conn:

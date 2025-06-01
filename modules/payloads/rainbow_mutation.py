@@ -12,6 +12,15 @@ from datetime import datetime
 import sqlite3
 from pathlib import Path
 
+
+class ImeKlase:
+    def __init__(self, operator):
+        self.operator = operator
+        self.logger = logging.getLogger('ImeKlase')
+
+    def run(self):
+        self.logger.info("✅ ImeKlase module started")
+        # TODO: implement logic here
 class RainbowMutation:
     """
     AI-Driven Mutation Engine sa Rainbow Tables pristupom

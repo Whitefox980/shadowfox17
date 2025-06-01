@@ -23,7 +23,13 @@ class FuzzEngine:
     
     def __init__(self, operator):
         self.operator = operator
-        self.logger = logging.getLogger('FuzzEngine')
+        self.logger = logging.getLogger("FuzzEngine")
+        self.logger.setLevel(logging.INFO)
+
+    def run(self):
+        self.logger.info("✅ FuzzEngine module started")
+        # TODO: implement logic here
+
         
         # Osnovni charset-ovi za fuzzing
         self.charsets = {

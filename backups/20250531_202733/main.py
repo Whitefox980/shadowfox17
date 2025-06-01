@@ -44,19 +44,7 @@ from modules.reporting.pdf_exporter import PDFExporter
 from modules.proxy.shadow_proxy import AIPayloadMutator
 from modules.proxy.traffic_shaper import TrafficShaper
 from core.base_module import ModuleStatus
-from modules.ai.ai_brain import TaskPriority
-from modules.attacks.smart_shadow_agent import SmartShadowAgent
-from modules.payloads.payload_seeder import PayloadLibrarySeeder
-from modules.intelligence.shadow_spyder import CrawlResult
-from modules.reporting.proof_collector import ProofCollector
-from core.orchestrator import ModuleStatus
-from core.shadowfox_event_bus import EventHandler
-from modules.ai.ai_brain import AIBrain
 
-from modules.ai.shadow_operator import ShadowFoxOperator
-
-operator = ShadowFoxOperator()
-brain = AIBrain(operator)
 class ShadowFoxCLI:
     """
     Main ShadowFox CLI interface

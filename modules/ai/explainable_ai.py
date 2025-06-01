@@ -7,6 +7,8 @@ from datetime import datetime
 import logging
 from urllib.parse import urlparse, parse_qs
 
+import logging
+
 class ExplainableAI:
     """
     Explainable AI modul koji objašnjava:
@@ -18,10 +20,14 @@ class ExplainableAI:
     
     def __init__(self, operator):
         self.operator = operator
-        self.logger = logging.getLogger('ExplainableAI')
+        self.logger = logging.getLogger("ExplainableAI")
+        self.logger.setLevel(logging.INFO)
         
         # Knowledge base za objašnjenja
         self.vulnerability_knowledge = self._build_knowledge_base()
+    def run(self):
+        self.logger.info("✅ ExplainableAI module started")
+        # TODO: implement logic here
         
     def _build_knowledge_base(self) -> Dict:
         """Gradi bazu znanja o ranjivostima i indikatorima"""

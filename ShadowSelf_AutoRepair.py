@@ -27,15 +27,14 @@ try:
     from rich.panel import Panel
     from rich.progress import Progress, TaskID
     from rich.text import Text
-    from rich.diff import Diff
     from rich.tree import Tree
     from rich.prompt import Confirm, Prompt
     RICH_AVAILABLE = True
-except ImportError:
+except Exception as e:
     RICH_AVAILABLE = False
-    print("⚠️  Rich biblioteka nije instalirana. Koristićemo osnovni prikaz.")
-    print("   Instaliraj sa: pip install rich")
-
+    print("⚠️  Rich biblioteka NIJE dostupna zbog greške:")
+    print(f"   {e}")
+    print("   Pokušaj: pip install rich")
 @dataclass
 class ModuleInfo:
     """Informacije o modulu"""
@@ -727,59 +726,48 @@ class ShadowSelfAutoRepair:
         self.log("Snapshot ažuriran", "INFO")
 
 def main():
-    """Glavna funkcija CLI-ja"""
+    repair = ShadowSelfAutoRepair()
+
     parser = argparse.ArgumentParser(
         description="🦊 ShadowSelf AutoRepair - AI asistent za održavanje ShadowFox17 frameworka",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Primeri korišćenja:
-  python ShadowSelf_AutoRepair.py --scan --visual
-  python ShadowSelf_AutoRepair.py --suggest
-  python ShadowSelf_AutoRepair.py --auto-fix --dry-run
-  python ShadowSelf_AutoRepair.py --undo
-  python ShadowSelf_AutoRepair.py --scan --log
-        """
+        formatter_class=argparse.RawTextHelpFormatter
     )
 
-    parser.add_argument('--scan', action='store_true',
-                        help='Skenira sve podfoldere i detektuje module')
-    parser.add_argument('--suggest', action='store_true',
-                        help='Predlaže gde treba dodati integracije za nove module')
-    parser.add_argument('--auto-fix', action='store_true',
-                        help='Automatski pokušava da doda potrebne importove i registre')
-    parser.add_argument('--dry-run', action='store_true',
-                        help='Ne menja ništa, već prikazuje šta bi uradio')
-    parser.add_argument('--undo', action='store_true',
-                        help='Vraća poslednje izmene (backup restore)')
-    parser.add_argument('--visual', action='store_true',
-                        help='Prikazuje vizuelni pregled strukture modula')
-    parser.add_argument('--log', action='store_true',
-                        help='Zapisuje izveštaj u log fajl')
+    parser.add_argument('--status', action='store_true',
+                    help='Prikaži status integracije svih modula')
+    parser.add_argument('--scan', action='store_true', help='Skeniraj sve module')
+    parser.add_argument('--visual', action='store_true', help='Prikaz rezultata u vizuelnom formatu')
+    parser.add_argument('--suggest', action='store_true', help='Predloži gde da se moduli integrišu')
+    parser.add_argument('--auto-fix', action='store_true', help='Automatski integriši neintegrisane module')
+    parser.add_argument('--dry-run', action='store_true', help='Prikaži šta bi se uradilo bez izmena')
+    parser.add_argument('--undo', action='store_true', help='Vrati poslednji backup')
+    parser.add_argument('--list-functions', action='store_true', help='Prikaži sve funkcije dostupne u modulu')
 
     args = parser.parse_args()
 
-    # Backup sistem
-    if args.undo:
-        restore_backup()
-        return
+    print("👉 ShadowSelf AutoRepair pokrenut")
 
+    if args.list_functions:
+        print("\n📜 Lista dostupnih metoda:\n")
+        with open(__file__, 'r') as f:
+            for line in f:
+                if line.strip().startswith("def "):
+                    print("  " + line.strip().split('(')[0])
+        sys.exit(0)
+    if args.status:
+        repairer = ShadowSelfAutoRepair()
+        modules = repairer.discover_modules()
+        repairer.display_scan_results_simple(modules)
     if args.scan:
-        modules = scan_modules()
-        if args.visual:
-            visual_output(modules)
-        if args.log:
-            save_log(modules)
-
+        repair.scan_command(visual=args.visual)
     if args.suggest:
-        modules = scan_modules()
-        suggestions = suggest_fixes(modules)
-        for s in suggestions:
-            print(f"[SUGGEST] {s}")
-
+        repair.suggest_command()
     if args.auto_fix:
-        modules = scan_modules()
-        suggestions = suggest_fixes(modules)
-        apply_fixes(suggestions, dry_run=args.dry_run)
+        repair.auto_fix_command(dry_run=args.dry_run)
+    if args.undo:
+        repair.undo_command()
 
+    if not any(vars(args).values()):
+        parser.print_help()
 if __name__ == "__main__":
     main()

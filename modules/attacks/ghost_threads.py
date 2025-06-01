@@ -24,7 +24,14 @@ class ShadowPersona:
     Klasa koja reprezentuje jednu lažnu AI ličnost
     Sa realnim ponašanjem i prikrivenim anomalijama
     """
-    
+    def __init__(self, operator):
+        self.operator = operator
+        self.logger = logging.getLogger("GhostThreads")
+        self.logger.setLevel(logging.INFO)
+
+    def run(self):
+        self.logger.info("✅ GhostThreads module started")
+        # TODO: implement logic here
     def __init__(self, persona_id: str = None):
         self.fake = Faker()
         self.persona_id = persona_id or self._generate_persona_id()

@@ -7,9 +7,16 @@ import threading
 from typing import Dict, List, Any, Optional, Callable
 from datetime import datetime, timedelta
 from dataclasses import dataclass
+from dataclasses import field
 from enum import Enum
 import sqlite3
 from pathlib import Path
+from modules.ai.shadow_operator import ShadowFoxOperator
+from modules.intelligence.shadow_spyder import ShadowReconSpider
+from modules.payloads.mutation_engine import MutationEngine
+from modules.attacks.smart_shadow_agent import SmartShadowAgent
+
+
 import queue
 import concurrent.futures
 
@@ -27,16 +34,29 @@ class AgentStatus(Enum):
 
 @dataclass
 class Task:
-    id: str
-    agent_name: str
-    action: str
-    params: Dict[str, Any]
-    priority: TaskPriority
-    created_at: datetime
-    depends_on: List[str] = None
+    sort_index: float = field(init=False, repr=False)
+    id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    name: str = "unnamed_task"
+    func: Optional[callable] = None
+    args: List[Any] = field(default_factory=list)
+    kwargs: Dict[str, Any] = field(default_factory=dict)
+    agent_name: str = ""
+    action: str = ""
+    params: Dict[str, Any] = field(default_factory=dict)
+    priority: TaskPriority = TaskPriority.MEDIUM
+    created_at: datetime = field(default_factory=datetime.utcnow)
+    depends_on: List[str] = field(default_factory=list)
     max_retries: int = 3
     current_retry: int = 0
 
+    def __post_init__(self):
+        # Za prioritetni queue (niža vrednost = viši prioritet)
+        self.sort_index = self.priority.value
+    def __lt__(self, other):
+        return self.id < other.id  # bilo koji deterministički kriterijum
+
+    def __repr__(self):
+        return f"<Task {self.name} (id={self.id}, priority={self.priority.name})>"
 @dataclass
 class AgentState:
     name: str
@@ -47,8 +67,7 @@ class AgentState:
     total_tasks: int = 0
     failed_tasks: int = 0
     avg_execution_time: float = 0.0
-
-class ShadowFoxAIBrain:
+class AIBrain:
     """
     Centralni AI Brain koji koordinira sve agente, upravlja zadacima,
     analizira rezultate i donosi odluke o daljem toku napada.
@@ -264,7 +283,10 @@ class ShadowFoxAIBrain:
             # Ažuriraj success rate
             if state.total_tasks > 0:
                 state.success_rate = 1.0 - (state.failed_tasks / state.total_tasks)
-    
+        # Ako su svi agenti u ERROR stanju, prekini misiju
+            if all(state.status == AgentStatus.ERROR for state in self.agent_states.values()):
+                self.logger.error("❌ Svi agenti su u ERROR stanju – zaustavljam AI Brain.")
+                self.brain_active = False
     def _process_task_queue(self):
         """Obrađuje zadatke iz queue-a"""
         
@@ -609,8 +631,6 @@ class ShadowFoxAIBrain:
 
 # Test AI Brain sistema
 if __name__ == "__main__":
-    from operator import ShadowFoxOperator
-    from recon_agent import ReconAgent
     
     # Setup
     op = ShadowFoxOperator()
@@ -663,8 +683,12 @@ if __name__ == "__main__":
 #```python
 # 1. Kreiraj operator i AI Brain
 op = ShadowFoxOperator()
-brain = ShadowFoxAIBrain(op)
+brain = AIBrain(op)
+operator = ShadowFoxOperator()
+recon_instance = ShadowReconSpider(operator)
+shadow_instance = SmartShadowAgent(operator)
 
+mutation_instance = MutationEngine(operator)
 # 2. Registruj sve agente
 brain.register_agent("ReconAgent", recon_instance)
 brain.register_agent("MutationEngine", mutation_instance)
